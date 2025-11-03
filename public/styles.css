@@ -7,27 +7,28 @@
     --bg-grid: #080810;
     --grid-line: #1a1a25;
     
-    /* Bright Neon Accents - Match Image Colors */
+    /* Bright Neon Accents - From Logo Colors (Even Brighter) */
     --neon-cyan: #00ffff;
-    --neon-green: #00ff88;
-    --neon-lime: #aaff00;
+    --neon-green: #00ff99;
+    --neon-lime: #bfff00;
+    --neon-yellow: #ffff00;
     
-    /* Retro Terminal Beige - Primary Text - Brighter for readability */
-    --terminal-beige: #e8e8c8;
-    --terminal-beige-bright: #f0f0d8;
+    /* Retro Terminal Beige - Primary Text - Maximum Brightness */
+    --terminal-beige: #f0f0e0;
+    --terminal-beige-bright: #fffff0;
     --terminal-dark: #050510;
     
-    /* Text Colors - Brighter and more readable */
-    --text-primary: #e8e8c8;
-    --text-secondary: #c8c8b8;
-    --text-muted: #9a9a8a;
-    --text-dim: #7a7a6a;
+    /* Text Colors - Brightest for readability */
+    --text-primary: #f0f0e0;
+    --text-secondary: #d8d8c8;
+    --text-muted: #b0b0a0;
+    --text-dim: #909080;
     
-    /* UI Elements - More visible */
+    /* UI Elements - Maximum visibility */
     --card-bg: rgba(10, 10, 20, 0.95);
-    --card-border: rgba(0, 255, 255, 0.25);
-    --glow-subtle: rgba(0, 255, 255, 0.25);
-    --glow-minimal: rgba(0, 255, 136, 0.2);
+    --card-border: rgba(0, 255, 255, 0.4);
+    --glow-subtle: rgba(0, 255, 255, 0.35);
+    --glow-minimal: rgba(0, 255, 153, 0.3);
 }
 
 * {
@@ -157,13 +158,21 @@ body {
 
 .server-lights .light.green {
     background: var(--neon-green);
-    box-shadow: 0 0 12px var(--neon-green), 0 0 24px var(--neon-green), 0 0 36px var(--neon-green);
+    box-shadow: 
+        0 0 15px var(--neon-green), 
+        0 0 30px var(--neon-green), 
+        0 0 45px var(--neon-green),
+        0 0 60px var(--neon-green);
     animation-delay: 0.3s;
 }
 
 .server-lights .light.blue {
     background: var(--neon-cyan);
-    box-shadow: 0 0 12px var(--neon-cyan), 0 0 24px var(--neon-cyan), 0 0 36px var(--neon-cyan);
+    box-shadow: 
+        0 0 15px var(--neon-cyan), 
+        0 0 30px var(--neon-cyan), 
+        0 0 45px var(--neon-cyan),
+        0 0 60px var(--neon-cyan);
     animation-delay: 0.6s;
 }
 
@@ -209,7 +218,9 @@ body {
     font-size: 1.5rem;
     font-weight: 400;
     color: var(--terminal-beige-bright);
-    text-shadow: 0 0 5px rgba(240, 240, 216, 0.5);
+    text-shadow: 
+        0 0 10px rgba(255, 255, 240, 0.7),
+        0 0 20px rgba(255, 255, 240, 0.5);
     letter-spacing: 2px;
     image-rendering: pixelated;
 }
@@ -286,7 +297,9 @@ body {
 .glitch {
     position: relative;
     color: var(--terminal-beige-bright);
-    text-shadow: 0 0 10px rgba(240, 240, 216, 0.6);
+    text-shadow: 
+        0 0 15px rgba(255, 255, 240, 0.8),
+        0 0 30px rgba(255, 255, 240, 0.6);
     animation: glitch 3s infinite;
 }
 
@@ -311,11 +324,12 @@ body {
     max-width: 700px;
     margin: 40px auto;
     background: var(--terminal-dark);
-    border: 2px solid rgba(0, 204, 221, 0.3);
+    border: 2px solid var(--neon-cyan);
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 
-        0 0 10px rgba(0, 204, 221, 0.15),
+        0 0 20px rgba(0, 255, 255, 0.5),
+        0 0 40px rgba(0, 255, 255, 0.3),
         inset 0 0 10px rgba(0, 0, 0, 0.5);
     image-rendering: pixelated;
 }
@@ -397,7 +411,9 @@ body {
     text-align: center;
     letter-spacing: 3px;
     color: var(--terminal-beige-bright);
-    text-shadow: 0 0 8px rgba(240, 240, 216, 0.5);
+    text-shadow: 
+        0 0 12px rgba(255, 255, 240, 0.7),
+        0 0 24px rgba(255, 255, 240, 0.5);
     image-rendering: pixelated;
 }
 
@@ -436,8 +452,9 @@ body {
 .post-card:hover {
     transform: translateY(-3px);
     box-shadow: 
-        0 0 15px var(--glow-subtle);
-    border-color: rgba(0, 204, 221, 0.3);
+        0 0 25px var(--glow-subtle),
+        0 0 50px rgba(0, 255, 255, 0.3);
+    border-color: var(--neon-cyan);
 }
 
 .post-card:hover::before {
