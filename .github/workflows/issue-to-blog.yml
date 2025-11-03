@@ -83,7 +83,7 @@ jobs:
             
             // Log what we found for debugging
             console.log('Issue analysis:', {
-              issueNumber: issue.number,
+              issueNumber: issueNumber,
               hasBlogLabel,
               isBlogPost,
               title: title || 'MISSING',
@@ -97,7 +97,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `ℹ️ This issue doesn't appear to be a blog post yet.\n\n**Missing fields:**\n${!title ? '- ❌ Post Title\n' : ''}${!description ? '- ❌ Description\n' : ''}${!category ? '- ❌ Category\n' : ''}${!content ? '- ❌ Content\n' : ''}\n\n**To publish this as a blog post:**\n1. Use the "📝 New Blog Post" template, or\n2. Add the required fields manually, or\n3. Add the "publish" label to trigger processing\n\nOnce all fields are present, the workflow will automatically process it.`
               });
               return;
@@ -109,7 +109,7 @@ jobs:
                 await github.rest.issues.addLabels({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  issue_number: issue.number,
+                  issue_number: issueNumber,
                   labels: ['publish']
                 });
               } catch (error) {
@@ -122,7 +122,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `❌ Error: Missing required fields.\n\nParsed values:\n- Title: ${title || 'MISSING'}\n- Description: ${description || 'MISSING'}\n- Category: ${category || 'MISSING'}\n- Content: ${content ? 'Present' : 'MISSING'}\n\nPlease check the issue format and try again.`
               });
               return;
@@ -137,7 +137,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `❌ Error: Could not generate a valid slug from the title. Please check the title format.`
               });
               return;
@@ -193,7 +193,7 @@ draft: false
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `❌ A blog post with this title already exists. Please choose a different title.`
               });
               return;
@@ -222,7 +222,7 @@ draft: false
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `✅ Blog post created successfully!\n\n**File created:** \`${filePath}\`\n**Slug:** \`${slug}\`\n**Category:** ${category}\n**Header Image:** ${headerImage}.png\n\nView it at: https://vortexnode.net/blog/${slug}\n\nThe post will be live after the deployment workflow completes (usually within 2-3 minutes). Check the [Actions tab](https://github.com/${context.repo.owner}/${context.repo.repo}/actions) to see deployment status.`
               });
               
@@ -230,14 +230,14 @@ draft: false
               await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 state: 'closed'
               });
             } catch (error) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: issueNumber,
                 body: `❌ Error creating blog post: ${error.message}\n\nPlease check the GitHub Actions logs for more details.`
               });
               throw error;
