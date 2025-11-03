@@ -152,6 +152,7 @@ jobs:
             const headerImage = headerImages[category] || 'AITesting';
             
             // Create blog post content
+            // Use current date in YYYY-MM-DD format (YAML date format)
             const date = new Date().toISOString().split('T')[0];
             
             // Escape YAML strings properly
@@ -161,7 +162,8 @@ jobs:
               return str.replace(/\n/g, ' ').replace(/"/g, '\\"').replace(/\\/g, '\\\\').trim();
             };
             
-            // Format date properly for YAML (YYYY-MM-DD format)
+            // Format date properly for YAML (YYYY-MM-DD format, no quotes needed)
+            // YAML date format: 2025-01-03 (Astro's z.coerce.date() will parse this correctly)
             const frontmatter = `---
 title: "${escapeYaml(title)}"
 description: "${escapeYaml(description)}"
