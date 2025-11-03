@@ -3,7 +3,7 @@ title: "Test"
 description: "Test"
 pubDate: 2025-11-03
 category: "Offensive Security"
-tags: ["_No response_"]
+tags: ["LLM", "testing", "quick-tip"]
 image: "offensive.png"
 draft: false
 ---
