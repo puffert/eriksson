@@ -154,24 +154,20 @@ jobs:
             // Create blog post content
             // Use current date in YYYY-MM-DD format (YAML date format)
             const date = new Date().toISOString().split('T')[0];
-            
-            // Escape YAML strings properly
-            const escapeYaml = (str) => {
-              if (!str) return '';
-              // Replace newlines with spaces for single-line YAML fields
-              return str.replace(/\n/g, ' ').replace(/"/g, '\\"').replace(/\\/g, '\\\\').trim();
-            };
-            
-            // Format date properly for YAML (YYYY-MM-DD format, no quotes needed)
-            // YAML date format: 2025-01-03 (Astro's z.coerce.date() will parse this correctly)
+
+            // Helper to safely quote strings for YAML using JSON string quoting
+            const yamlString = (value) => JSON.stringify((value || '').toString().replace(/\n/g, ' ').trim());
+            const tagsYaml = tags && tags.length > 0 ? tags.map(t => yamlString(t)).join(', ') : '';
+
+            // Build frontmatter with minimal interpolation to avoid YAML parser confusion
             const frontmatter = `---
-title: "${escapeYaml(title)}"
-description: "${escapeYaml(description)}"
+title: ${yamlString(title)}
+description: ${yamlString(description)}
 pubDate: ${date}
-category: "${escapeYaml(category)}"
-icon: "${escapeYaml(icon)}"
-tags: [${tags.length > 0 ? tags.map(t => `"${escapeYaml(t)}"`).join(', ') : ''}]
-image: "${headerImage}.png"
+category: ${yamlString(category)}
+icon: ${yamlString(icon)}
+tags: [${tagsYaml}]
+image: ${yamlString(`${headerImage}.png`)}
 draft: false
 ---
 
