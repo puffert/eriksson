@@ -702,6 +702,6 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-green);
-    box-shadow: 0 0 10px var(--glow-green);
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--glow-cyan);
 }
