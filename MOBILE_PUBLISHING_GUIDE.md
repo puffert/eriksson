@@ -25,15 +25,16 @@
 
 ### Step 3: Publish
 1. Submit the issue
-2. Go to **Labels** and add either:
-   - **"publish"** label, OR
-   - **"blog-post"** label (automatically added from template)
-3. The GitHub Action will automatically:
+2. **That's it!** The workflow will automatically:
+   - Detect it's a blog post (from the template fields)
+   - Add the "publish" label automatically
    - Convert your issue to a blog post
    - Add the appropriate header image
    - Deploy to your site
    - Comment with the live URL
    - Close the issue
+
+**Note:** If you don't see the label, that's okay - the workflow will still process your post automatically!
 
 ## Content Tips
 

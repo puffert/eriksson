@@ -2,11 +2,10 @@ name: Convert Issue to Blog Post
 
 on:
   issues:
-    types: [labeled]
+    types: [opened, labeled]
 
 jobs:
   create-blog-post:
-    if: contains(github.event.label.name, 'publish') || contains(github.event.label.name, 'blog-post')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,6 +21,14 @@ jobs:
           script: |
             const issue = context.payload.issue;
             const body = issue.body || '';
+            const labels = issue.labels || [];
+            const labelNames = labels.map(l => l.name || l);
+            
+            // Check if this is a blog post issue
+            // Either has the label, or has the required fields from the template
+            const hasBlogLabel = labelNames.some(name => 
+              name === 'publish' || name === 'blog-post'
+            );
             
             // Parse the issue body (GitHub form format)
             // GitHub Forms format: ### Field Name\n\n[value]\n\n
@@ -50,6 +57,29 @@ jobs:
             const icon = parseField('Icon \\(optional\\)') || parseField('Icon') || '📄';
             const content = parseField('Content');
             const source = parseField('Source URL \\(optional\\)') || parseField('Source URL') || '';
+            
+            // Check if this looks like a blog post (has required fields)
+            const isBlogPost = title && description && category && content;
+            
+            // If not a blog post and no label, skip
+            if (!hasBlogLabel && !isBlogPost) {
+              console.log('Issue does not appear to be a blog post. Skipping.');
+              return;
+            }
+            
+            // If it's a blog post but no label, add the publish label
+            if (isBlogPost && !hasBlogLabel) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ['publish']
+                });
+              } catch (error) {
+                console.log('Could not add label (might not exist):', error.message);
+              }
+            }
             
             // Validate required fields
             if (!title || !description || !category || !content) {
