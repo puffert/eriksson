@@ -1,24 +1,33 @@
-/* Cyberpunk Pixelated Data Center Style */
+/* Retro-Futuristic Lab Style - 1980s Terminal + Voxel Art */
 
 :root {
-    --bg-dark: #0d1520;
-    --bg-grid: #162030;
-    --grid-line: #1e2a3a;
-    --text-primary: #00ff88;
-    --text-secondary: #00ccff;
-    --text-muted: #6b7a8a;
-    --accent-red: #ff4444;
-    --accent-green: #00ff88;
-    --accent-blue: #00aaff;
-    --accent-yellow: #ffaa00;
-    --accent-orange: #ff8800;
-    --card-bg: rgba(13, 21, 32, 0.95);
-    --card-border: rgba(0, 255, 136, 0.15);
-    --glow-green: rgba(0, 255, 136, 0.5);
-    --glow-blue: rgba(0, 170, 255, 0.5);
-    --server-blue: #00aaff;
-    --server-green: #00ff88;
-    --keyboard-gray: #3a4555;
+    /* Dark Base Colors */
+    --bg-dark: #0d0d0d;
+    --bg-secondary: #1e1e2f;
+    --bg-grid: #1a1a2e;
+    --grid-line: #2a2a3e;
+    
+    /* Neon Accents */
+    --neon-cyan: #00ffff;
+    --neon-magenta: #ff00ff;
+    --neon-lime: #aaff00;
+    
+    /* Retro Terminal Beige */
+    --terminal-beige: #d4d4a8;
+    --terminal-dark: #0d0d0d;
+    
+    /* Text Colors */
+    --text-primary: #aaff00;
+    --text-secondary: #00ffff;
+    --text-tertiary: #ff00ff;
+    --text-muted: #6b6b8a;
+    
+    /* UI Elements */
+    --card-bg: rgba(30, 30, 47, 0.95);
+    --card-border: rgba(0, 255, 255, 0.2);
+    --glow-cyan: rgba(0, 255, 255, 0.4);
+    --glow-magenta: rgba(255, 0, 255, 0.4);
+    --glow-lime: rgba(170, 255, 0, 0.4);
 }
 
 * {
@@ -28,8 +37,8 @@
 }
 
 body {
-    font-family: 'Share Tech Mono', monospace;
-    background: linear-gradient(135deg, #0d1520 0%, #162030 100%);
+    font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-secondary) 100%);
     background-color: var(--bg-dark);
     color: var(--text-primary);
     line-height: 1.6;
@@ -37,6 +46,30 @@ body {
     position: relative;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+}
+
+/* CRT Scanline Effect */
+.crt-scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 100;
+    animation: scanlineMove 8s linear infinite;
+}
+
+@keyframes scanlineMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
 }
 
 /* Grid Background - Pixelated Style */
@@ -51,7 +84,7 @@ body {
         linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 40px 40px;
     background-color: var(--bg-grid);
-    opacity: 0.25;
+    opacity: 0.2;
     z-index: 0;
     animation: gridMove 25s linear infinite;
     image-rendering: pixelated;
@@ -62,7 +95,7 @@ body {
     100% { transform: translate(50px, 50px); }
 }
 
-/* Server Room Ambient Glow */
+/* Lab Ambient Glow - Retro Neon */
 .vortex-overlay {
     position: fixed;
     top: 0;
@@ -70,16 +103,16 @@ body {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 50%, rgba(0, 170, 255, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 80% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(0, 170, 255, 0.03) 0%, transparent 60%);
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 80% 50%, rgba(255, 0, 255, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(170, 255, 0, 0.04) 0%, transparent 60%);
     z-index: 1;
     pointer-events: none;
     animation: ambientPulse 8s ease-in-out infinite;
 }
 
 @keyframes ambientPulse {
-    0%, 100% { opacity: 0.6; }
+    0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
 }
 
@@ -124,14 +157,14 @@ body {
 }
 
 .server-lights .light.green {
-    background: var(--server-green);
-    box-shadow: 0 0 15px var(--server-green), 0 0 30px var(--server-green);
+    background: var(--neon-lime);
+    box-shadow: 0 0 15px var(--neon-lime), 0 0 30px var(--neon-lime);
     animation-delay: 0.3s;
 }
 
 .server-lights .light.blue {
-    background: var(--server-blue);
-    box-shadow: 0 0 15px var(--server-blue), 0 0 30px var(--server-blue);
+    background: var(--neon-cyan);
+    box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-cyan);
     animation-delay: 0.6s;
 }
 
@@ -173,20 +206,21 @@ body {
 }
 
 .logo {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Press Start 2P', 'VT323', 'Orbitron', monospace;
     font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--server-green);
+    font-weight: 400;
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 10px var(--glow-green),
-        0 0 20px var(--glow-green),
-        0 0 30px var(--glow-green);
-    letter-spacing: 3px;
-    filter: drop-shadow(0 0 5px var(--glow-green));
+        0 0 10px var(--glow-lime),
+        0 0 20px var(--glow-lime),
+        0 0 30px var(--glow-lime);
+    letter-spacing: 2px;
+    filter: drop-shadow(0 0 5px var(--glow-lime));
+    image-rendering: pixelated;
 }
 
 .terminal-prompt {
-    color: var(--accent-green);
+    color: var(--neon-lime);
     margin-right: 10px;
 }
 
@@ -197,14 +231,15 @@ body {
 }
 
 .nav-link {
-    color: var(--server-blue);
+    font-family: 'VT323', 'Orbitron', monospace;
+    color: var(--neon-cyan);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     letter-spacing: 2px;
     transition: all 0.3s ease;
     position: relative;
     padding: 5px 0;
-    text-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+    text-shadow: 0 0 5px var(--glow-cyan);
 }
 
 .nav-link::after {
@@ -214,16 +249,16 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--server-green);
-    box-shadow: 0 0 10px var(--server-green);
+    background: var(--neon-lime);
+    box-shadow: 0 0 10px var(--neon-lime);
     transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--server-green);
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 10px var(--glow-green),
-        0 0 20px var(--glow-green);
+        0 0 10px var(--glow-lime),
+        0 0 20px var(--glow-lime);
 }
 
 .nav-link:hover::after {
@@ -247,24 +282,25 @@ body {
 }
 
 .hero-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
+    font-family: 'Press Start 2P', 'VT323', 'Orbitron', monospace;
+    font-size: 3.5rem;
+    font-weight: 400;
     margin-bottom: 20px;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
+    image-rendering: pixelated;
 }
 
 .glitch {
     position: relative;
-    color: var(--server-green);
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 10px var(--glow-green),
-        0 0 20px var(--glow-green),
-        0 0 30px var(--glow-green),
-        2px 2px 0 var(--server-blue),
-        -2px -2px 0 var(--accent-red);
+        0 0 10px var(--glow-lime),
+        0 0 20px var(--glow-lime),
+        0 0 30px var(--glow-lime),
+        2px 2px 0 var(--neon-cyan),
+        -2px -2px 0 var(--neon-magenta);
     animation: glitch 3s infinite;
-    filter: drop-shadow(0 0 15px var(--server-green));
+    filter: drop-shadow(0 0 15px var(--neon-lime));
 }
 
 @keyframes glitch {
@@ -276,36 +312,37 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
-    color: var(--server-blue);
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+    color: var(--neon-cyan);
     letter-spacing: 3px;
     margin-bottom: 40px;
-    text-shadow: 0 0 10px var(--glow-blue);
+    text-shadow: 0 0 10px var(--glow-cyan);
 }
 
 /* Terminal Window - Retro CRT Style */
 .terminal-window {
     max-width: 700px;
     margin: 40px auto;
-    background: rgba(13, 21, 32, 0.95);
-    border: 3px solid var(--server-green);
+    background: var(--terminal-dark);
+    border: 3px solid var(--neon-cyan);
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 
-        0 0 30px var(--glow-green),
-        0 0 60px rgba(0, 255, 136, 0.3),
-        inset 0 0 20px rgba(0, 255, 136, 0.1);
+        0 0 30px var(--glow-cyan),
+        0 0 60px rgba(0, 255, 255, 0.3),
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
     image-rendering: pixelated;
 }
 
 .terminal-header {
-    background: rgba(0, 255, 136, 0.15);
+    background: rgba(212, 212, 168, 0.15);
     padding: 10px 15px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-bottom: 2px solid var(--server-green);
-    box-shadow: 0 2px 10px rgba(0, 255, 136, 0.3);
+    border-bottom: 2px solid var(--terminal-beige);
+    box-shadow: 0 2px 10px rgba(212, 212, 168, 0.3);
 }
 
 .terminal-button {
@@ -317,20 +354,21 @@ body {
 }
 
 .terminal-title {
-    color: var(--server-blue);
-    font-size: 0.85rem;
+    font-family: 'VT323', monospace;
+    color: var(--terminal-beige);
+    font-size: 1rem;
     letter-spacing: 1px;
-    text-shadow: 0 0 5px var(--glow-blue);
+    text-shadow: 0 0 5px var(--terminal-beige);
 }
 
 .terminal-body {
     padding: 20px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
     font-size: 0.9rem;
     line-height: 2;
-    background: rgba(0, 0, 0, 0.4);
-    color: var(--server-green);
-    text-shadow: 0 0 5px var(--glow-green);
+    background: var(--terminal-dark);
+    color: var(--terminal-beige);
+    text-shadow: 0 0 5px rgba(212, 212, 168, 0.5);
 }
 
 .terminal-line {
@@ -338,20 +376,20 @@ body {
 }
 
 .prompt {
-    color: var(--server-green);
+    color: var(--neon-lime);
     margin-right: 10px;
-    text-shadow: 0 0 5px var(--glow-green);
+    text-shadow: 0 0 5px var(--glow-lime);
 }
 
 .command {
-    color: var(--server-green);
-    text-shadow: 0 0 5px var(--glow-green);
+    color: var(--terminal-beige);
+    text-shadow: 0 0 5px rgba(212, 212, 168, 0.5);
 }
 
 .output {
-    color: var(--server-blue);
+    color: var(--neon-cyan);
     margin-left: 20px;
-    text-shadow: 0 0 5px var(--glow-blue);
+    text-shadow: 0 0 5px var(--glow-cyan);
 }
 
 .blinking-cursor {
@@ -369,16 +407,17 @@ body {
 }
 
 .section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-family: 'Press Start 2P', 'VT323', 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 400;
     margin-bottom: 50px;
     text-align: center;
     letter-spacing: 3px;
-    color: var(--server-green);
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 15px var(--glow-green),
-        0 0 30px var(--glow-green);
+        0 0 15px var(--glow-lime),
+        0 0 30px var(--glow-lime);
+    image-rendering: pixelated;
 }
 
 .posts-grid {
@@ -407,7 +446,7 @@ body {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(0, 255, 136, 0.15),
+        rgba(0, 255, 255, 0.15),
         transparent
     );
     transition: left 0.5s ease;
@@ -416,9 +455,9 @@ body {
 .post-card:hover {
     transform: translateY(-5px);
     box-shadow: 
-        0 0 30px var(--glow-green),
-        0 0 60px rgba(0, 255, 136, 0.2);
-    border-color: var(--server-green);
+        0 0 30px var(--glow-cyan),
+        0 0 60px rgba(0, 255, 255, 0.2);
+    border-color: var(--neon-cyan);
 }
 
 .post-card:hover::before {
@@ -438,31 +477,39 @@ body {
 }
 
 .post-category {
-    color: var(--server-blue);
-    background: rgba(0, 170, 255, 0.15);
+    font-family: 'VT323', monospace;
+    color: var(--neon-cyan);
+    background: rgba(0, 255, 255, 0.15);
     padding: 3px 10px;
-    border: 1px solid var(--server-blue);
+    border: 1px solid var(--neon-cyan);
     letter-spacing: 1px;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
-    text-shadow: 0 0 5px var(--server-blue);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    text-shadow: 0 0 5px var(--neon-cyan);
+    font-size: 1.1rem;
+}
+
+.pixel-icon {
+    image-rendering: pixelated;
+    font-size: 1.2rem;
 }
 
 .post-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
+    font-family: 'VT323', 'Orbitron', monospace;
+    font-size: 1.8rem;
     margin-bottom: 15px;
-    color: var(--text-primary);
+    color: var(--neon-lime);
     letter-spacing: 1px;
+    text-shadow: 0 0 10px var(--glow-lime);
 }
 
 .post-excerpt {
-    color: var(--text-secondary);
+    color: var(--terminal-beige);
     margin-bottom: 20px;
     line-height: 1.8;
 }
 
 .post-link {
-    color: var(--accent-green);
+    color: var(--neon-cyan);
     text-decoration: none;
     font-weight: bold;
     letter-spacing: 1px;
@@ -471,10 +518,10 @@ body {
 }
 
 .post-link:hover {
-    color: var(--server-green);
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 10px var(--glow-green),
-        0 0 20px var(--glow-green);
+        0 0 10px var(--glow-lime),
+        0 0 20px var(--glow-lime);
     transform: translateX(5px);
 }
 
@@ -513,22 +560,23 @@ body {
 }
 
 .stat-box:hover {
-    border-color: var(--server-blue);
+    border-color: var(--neon-magenta);
     box-shadow: 
-        0 0 20px var(--glow-blue),
-        0 0 40px rgba(0, 170, 255, 0.3);
+        0 0 20px var(--glow-magenta),
+        0 0 40px rgba(255, 0, 255, 0.3);
 }
 
 .stat-number {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--server-blue);
+    font-family: 'Press Start 2P', 'VT323', monospace;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--neon-magenta);
     text-shadow: 
-        0 0 15px var(--glow-blue),
-        0 0 30px var(--glow-blue);
+        0 0 15px var(--glow-magenta),
+        0 0 30px var(--glow-magenta);
     margin-bottom: 10px;
-    filter: drop-shadow(0 0 10px var(--server-blue));
+    filter: drop-shadow(0 0 10px var(--neon-magenta));
+    image-rendering: pixelated;
 }
 
 .stat-label {
@@ -563,23 +611,26 @@ body {
 }
 
 .contact-link {
-    color: var(--server-green);
+    font-family: 'VT323', monospace;
+    color: var(--neon-cyan);
     text-decoration: none;
     padding: 15px 30px;
     border: 2px solid var(--card-border);
     background: var(--card-bg);
     transition: all 0.3s ease;
     letter-spacing: 2px;
-    text-shadow: 0 0 5px var(--glow-green);
+    text-shadow: 0 0 5px var(--glow-cyan);
+    font-size: 1.2rem;
 }
 
 .contact-link:hover {
-    border-color: var(--server-green);
+    border-color: var(--neon-lime);
     box-shadow: 
-        0 0 20px var(--glow-green),
-        0 0 40px rgba(0, 255, 136, 0.3);
+        0 0 20px var(--glow-lime),
+        0 0 40px rgba(170, 255, 0, 0.3);
     transform: scale(1.05);
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(170, 255, 0, 0.1);
+    color: var(--neon-lime);
 }
 
 /* Footer */
@@ -602,10 +653,10 @@ body {
 }
 
 .footer-status {
-    color: var(--server-green);
+    color: var(--neon-lime);
     text-shadow: 
-        0 0 10px var(--glow-green),
-        0 0 20px var(--glow-green);
+        0 0 10px var(--glow-lime),
+        0 0 20px var(--glow-lime);
 }
 
 /* Responsive Design */
