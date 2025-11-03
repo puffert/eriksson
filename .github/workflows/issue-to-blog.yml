@@ -61,9 +61,25 @@ jobs:
             // Check if this looks like a blog post (has required fields)
             const isBlogPost = title && description && category && content;
             
-            // If not a blog post and no label, skip
+            // Log what we found for debugging
+            console.log('Issue analysis:', {
+              issueNumber: issue.number,
+              hasBlogLabel,
+              isBlogPost,
+              title: title || 'MISSING',
+              description: description ? 'Present' : 'MISSING',
+              category: category || 'MISSING',
+              content: content ? 'Present' : 'MISSING'
+            });
+            
+            // If not a blog post and no label, add comment explaining why
             if (!hasBlogLabel && !isBlogPost) {
-              console.log('Issue does not appear to be a blog post. Skipping.');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `ℹ️ This issue doesn't appear to be a blog post yet.\n\n**Missing fields:**\n${!title ? '- ❌ Post Title\n' : ''}${!description ? '- ❌ Description\n' : ''}${!category ? '- ❌ Category\n' : ''}${!content ? '- ❌ Content\n' : ''}\n\n**To publish this as a blog post:**\n1. Use the "📝 New Blog Post" template, or\n2. Add the required fields manually, or\n3. Add the "publish" label to trigger processing\n\nOnce all fields are present, the workflow will automatically process it.`
+              });
               return;
             }
             
