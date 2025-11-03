@@ -15,11 +15,9 @@
    - **Title**: Your post title
    - **Description**: Brief 1-2 sentence summary
    - **Category**: Choose from:
-     - **News** → Uses `news.png` header
-     - **Educational** → Uses `AITesting.png` header
      - **Offensive Security** → Uses `offensive.png` header
-     - **Tools** → Uses `AITesting.png` header
-     - **Testing** → Uses `AITesting.png` header
+     - **Learning** → Uses `AITesting.png` header
+     - **News** → Uses `news.png` header
    - **Tags**: Add relevant tags (comma-separated)
    - **Icon**: Choose an emoji (optional)
    - **Content**: Write in Markdown
@@ -71,11 +69,9 @@ def test_llm_response(prompt):
 
 | Category | Header Image | Use For |
 |----------|-------------|---------|
-| News | news.png | Latest AI/security news, updates |
-| Educational | AITesting.png | Tutorials, guides, explanations |
-| Offensive Security | offensive.png | Red team, pentesting, exploits |
-| Tools | AITesting.png | Tool reviews, releases |
-| Testing | AITesting.png | Testing methodologies, QA |
+| Offensive Security | offensive.png | Red team, pentesting, exploits, attack techniques |
+| Learning | AITesting.png | Tutorials, guides, educational content, how-tos |
+| News | news.png | Latest AI/security news, updates, industry developments |
 
 ## Quick Actions
 

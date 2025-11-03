@@ -27,11 +27,9 @@ body:
       label: Category
       description: Choose the main category for this post
       options:
-        - News
-        - Educational
         - Offensive Security
-        - Tools
-        - Testing
+        - Learning
+        - News
     validations:
       required: true
       

@@ -45,11 +45,9 @@ jobs:
             
             // Determine header image based on category
             const headerImages = {
-              'News': 'news',
-              'Educational': 'AITesting',
               'Offensive Security': 'offensive',
-              'Tools': 'AITesting',
-              'Testing': 'AITesting'
+              'Learning': 'AITesting',
+              'News': 'news'
             };
             const headerImage = headerImages[category] || 'AITesting';
             
