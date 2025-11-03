@@ -5,6 +5,11 @@ interface Props {
 }
 
 const { title, description = "AI Testing Labs - Retro-futuristic blog about AI testing and validation" } = Astro.props;
+
+// Ensure proper path with trailing slash
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL 
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <!DOCTYPE html>
@@ -17,7 +22,7 @@ const { title, description = "AI Testing Labs - Retro-futuristic blog about AI t
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href={`${import.meta.env.BASE_URL}styles.css`} />
+    <link rel="stylesheet" href={`${baseUrl}styles.css`} />
 </head>
 <body>
     <div class="grid-background"></div>
@@ -75,7 +80,7 @@ const { title, description = "AI Testing Labs - Retro-futuristic blog about AI t
         </div>
     </footer>
 
-    <script is:inline src={`${import.meta.env.BASE_URL}script.js`}></script>
+    <script is:inline src={`${baseUrl}script.js`}></script>
 </body>
 </html>
 
