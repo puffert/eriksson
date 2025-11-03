@@ -160,23 +160,21 @@ jobs:
             const tagsYaml = tags && tags.length > 0 ? tags.map(t => yamlString(t)).join(', ') : '';
 
             // Build frontmatter with minimal interpolation to avoid YAML parser confusion
-const frontmatter = `---
-title: ${yamlString(title)}
-description: ${yamlString(description)}
-pubDate: ${date}
-category: ${yamlString(category)}
-tags: [${tagsYaml}]
-image: ${yamlString(headerImage + '.png')}
-draft: false
----
-
-`;
+            const frontmatter = '---\n' +
+              'title: ' + yamlString(title) + '\n' +
+              'description: ' + yamlString(description) + '\n' +
+              'pubDate: ' + date + '\n' +
+              'category: ' + yamlString(category) + '\n' +
+              'tags: [' + tagsYaml + ']\n' +
+              'image: ' + yamlString(headerImage + '.png') + '\n' +
+              'draft: false\n' +
+              '---\n\n';
             
             const fullContent = frontmatter + content + 
-              (source ? `\n\n---\n\n[Original Source](${source})` : '');
+              (source ? '\n\n---\n\n[Original Source](' + source + ')' : '');
             
             // Create the file
-            const filePath = `src/content/blog/${slug}.md`;
+            const filePath = 'src/content/blog/' + slug + '.md';
             
             // Check if file already exists
             try {
@@ -210,7 +208,7 @@ draft: false
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 path: filePath,
-                message: `📝 New blog post: ${title}`,
+                message: '📝 New blog post: ' + title,
                 content: Buffer.from(fullContent).toString('base64'),
                 branch: repo.default_branch,
               });
@@ -220,7 +218,7 @@ draft: false
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNumber,
-                body: `✅ Blog post created successfully!\n\n**File created:** \`${filePath}\`\n**Slug:** \`${slug}\`\n**Category:** ${category}\n**Header Image:** ${headerImage}.png\n\nView it at: https://vortexnode.net/blog/${slug}\n\nThe post will be live after the deployment workflow completes (usually within 2-3 minutes). Check the [Actions tab](https://github.com/${context.repo.owner}/${context.repo.repo}/actions) to see deployment status.`
+                body: '✅ Blog post created successfully!\n\n**File created:** `' + filePath + '`\n**Slug:** `' + slug + '`\n**Category:** ' + category + '\n**Header Image:** ' + headerImage + '.png\n\nView it at: https://vortexnode.net/blog/' + slug + '\n\nThe post will be live after the deployment workflow completes (usually within 2-3 minutes). Check the [Actions tab](https://github.com/' + context.repo.owner + '/' + context.repo.repo + '/actions) to see deployment status.'
               });
               
               // Close the issue
