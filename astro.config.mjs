@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://puffert.github.io',
-  base: '/eriksson',
+  base: import.meta.env.MODE === 'production' ? '/eriksson' : '/',
   integrations: [sitemap()],
   output: 'static',
 });
