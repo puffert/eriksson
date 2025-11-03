@@ -8,7 +8,7 @@ const recentPosts = allPosts
   .slice(0, 3);
 ---
 
-<BaseLayout title="AI Testing Labs">
+<BaseLayout title="Vortex Node">
     <section id="home" class="hero-section">
         <div class="hero-content">
             <h2 class="hero-title">
@@ -20,20 +20,8 @@ const recentPosts = allPosts
                     <span class="terminal-button"></span>
                     <span class="terminal-title">SYSTEM_STATUS</span>
                 </div>
-                <div class="terminal-body">
-                    <div class="terminal-line">
-                        <span class="prompt">></span>
-                        <span class="command">initialize_ai_testing_protocol</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[OK] Neural networks activated</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output">[OK] Test frameworks loaded</span>
-                    </div>
-                    <div class="terminal-line">
-                        <span class="output blinking-cursor">[READY] System operational</span>
-                    </div>
+                <div class="terminal-body" id="terminal-body">
+                    <!-- Terminal content will be added by JavaScript -->
                 </div>
             </div>
         </div>
@@ -64,32 +52,6 @@ const recentPosts = allPosts
         </div>
         <div style="text-align: center; margin-top: 40px;">
             <a href="/blog" class="post-link" style="font-size: 1.2rem;">VIEW ALL POSTS →</a>
-        </div>
-    </section>
-
-    <section id="about" class="about-section">
-        <h2 class="section-title">ABOUT THE LAB</h2>
-        <div class="about-content">
-            <p class="about-text">
-                Welcome to AI Testing Labs, a cyberpunk-inspired educational blog dedicated to 
-                exploring the cutting edge of artificial intelligence testing and validation. 
-                Here, we dive deep into testing methodologies, frameworks, and tools that help 
-                ensure AI systems are robust, reliable, and ready for production.
-            </p>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-number" data-target={allPosts.length}>0</div>
-                    <div class="stat-label">POSTS</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" data-target="100">0</div>
-                    <div class="stat-label">TESTS</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" data-target="25">0</div>
-                    <div class="stat-label">TOOLS</div>
-                </div>
-            </div>
         </div>
     </section>
 

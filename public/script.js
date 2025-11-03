@@ -1,52 +1,139 @@
 // Cyberpunk Interactive Effects
 
-// Animated counter for stats
-function animateCounter(element, target, duration = 2000) {
-    const start = 0;
-    const increment = target / (duration / 16); // 60fps
-    let current = start;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current);
-        }
-    }, 16);
-}
-
-// Initialize counters when stats section is visible
-const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px'
-};
-
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const statNumbers = entry.target.querySelectorAll('.stat-number');
-            statNumbers.forEach(stat => {
-                const target = parseInt(stat.getAttribute('data-target'));
-                if (!stat.classList.contains('animated')) {
-                    stat.classList.add('animated');
-                    animateCounter(stat, target);
-                }
-            });
-        }
-    });
-}, observerOptions);
-
-// Observe stats section
 document.addEventListener('DOMContentLoaded', () => {
-    const statsSection = document.querySelector('.stats-grid');
-    if (statsSection) {
-        statsObserver.observe(statsSection.parentElement);
+    
+    // Function to type text character by character
+    function typeCommand(element, text, callback) {
+        let index = 0;
+        const typingSpeed = 50; // milliseconds per character
+        
+        // Add blinking cursor
+        element.classList.add('blinking-cursor');
+        
+        function typeChar() {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeChar, typingSpeed + Math.random() * 30); // Add slight randomness for realism
+            } else {
+                // Remove cursor after typing completes
+                element.classList.remove('blinking-cursor');
+                if (callback) {
+                    callback();
+                }
+            }
+        }
+        
+        typeChar();
+    }
+    
+    // Initialize terminal on page load
+    const terminalBody = document.getElementById('terminal-body');
+    
+    if (terminalBody) {
+        // Initial terminal startup sequence
+        setTimeout(() => {
+            // Add command line
+            const commandLine = document.createElement('div');
+            commandLine.className = 'terminal-line';
+            commandLine.innerHTML = '<span class="prompt">></span><span class="command"></span>';
+            terminalBody.appendChild(commandLine);
+            
+            const commandElement = commandLine.querySelector('.command');
+            
+            // Type the command character by character
+            typeCommand(commandElement, 'initialize_ai_testing_protocol', () => {
+                // Add first output after typing completes
+                setTimeout(() => {
+                    const output1 = document.createElement('div');
+                    output1.className = 'terminal-line';
+                    output1.innerHTML = '<span class="output">[OK] Neural networks activated</span>';
+                    terminalBody.appendChild(output1);
+                    
+                    // Add second output
+                    setTimeout(() => {
+                        const output2 = document.createElement('div');
+                        output2.className = 'terminal-line';
+                        output2.innerHTML = '<span class="output">[OK] Test frameworks loaded</span>';
+                        terminalBody.appendChild(output2);
+                        
+                        // Add final output
+                        setTimeout(() => {
+                            const output3 = document.createElement('div');
+                            output3.className = 'terminal-line';
+                            output3.innerHTML = '<span class="output blinking-cursor">[READY] System operational</span>';
+                            terminalBody.appendChild(output3);
+                        }, 400);
+                    }, 400);
+                }, 300);
+            });
+        }, 500);
+    }
+
+    // About button functionality
+    const aboutBtn = document.getElementById('about-btn');
+    let aboutClicked = false;
+    
+    if (aboutBtn && terminalBody) {
+        aboutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Prevent multiple clicks
+            if (aboutClicked) return;
+            aboutClicked = true;
+            
+            // Scroll to terminal
+            const terminal = document.querySelector('.terminal-window');
+            if (terminal) {
+                terminal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            // Clear terminal and add about command after a delay
+            setTimeout(() => {
+                // Clear terminal content
+                terminalBody.innerHTML = '';
+                
+                // Add command line
+                const commandLine = document.createElement('div');
+                commandLine.className = 'terminal-line';
+                commandLine.innerHTML = '<span class="prompt">></span><span class="command"></span>';
+                terminalBody.appendChild(commandLine);
+                
+                const commandElement = commandLine.querySelector('.command');
+                
+                // Type the command character by character
+                typeCommand(commandElement, 'cat about.txt', () => {
+                    // Add about text output after typing completes
+                    setTimeout(() => {
+                        const aboutLine = document.createElement('div');
+                        aboutLine.className = 'terminal-line';
+                        aboutLine.style.whiteSpace = 'pre-wrap';
+                        aboutLine.innerHTML = '<span class="output">A personal blog on AI in offensive security. I post about building/using AI tools, testing AI/LLM/ML applications, and sharing relevant news and education.</span>';
+                        terminalBody.appendChild(aboutLine);
+                        
+                        // Add new prompt line
+                        setTimeout(() => {
+                            const readyLine = document.createElement('div');
+                            readyLine.className = 'terminal-line';
+                            readyLine.innerHTML = '<span class="prompt">></span><span class="command blinking-cursor"></span>';
+                            terminalBody.appendChild(readyLine);
+                            
+                            // Scroll terminal into view
+                            readyLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                            
+                            // Reset flag after animation complete (allow clicking again after a delay)
+                            setTimeout(() => {
+                                aboutClicked = false;
+                            }, 3000);
+                        }, 1000);
+                    }, 300);
+                });
+            }, 600);
+        });
     }
 
     // Smooth scroll for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]:not(#about-btn)').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));

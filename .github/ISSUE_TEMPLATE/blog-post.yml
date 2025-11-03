@@ -1,0 +1,79 @@
+name: "📝 New Blog Post"
+description: Create a new blog post
+title: "[BLOG]: "
+labels: ["blog-post"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Post Title
+      description: The title of your blog post
+      placeholder: "My Amazing AI Security Discovery"
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A brief summary of the post (1-2 sentences)
+      placeholder: "A quick overview of what this post is about..."
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Choose the main category for this post
+      options:
+        - News
+        - Educational
+        - Offensive Security
+        - Tools
+        - Testing
+    validations:
+      required: true
+      
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Additional tags (comma-separated)
+      placeholder: "AI, LLM, security, testing"
+      
+  - type: input
+    id: icon
+    attributes:
+      label: Icon (optional)
+      description: Emoji icon for the post
+      placeholder: "🔥"
+      value: "📰"
+      
+  - type: textarea
+    id: content
+    attributes:
+      label: Content
+      description: |
+        Write your post content in Markdown. You can:
+        - Share links to articles you found
+        - Add your commentary
+        - Include code snippets with ```
+        - Add images with ![alt](url)
+      placeholder: |
+        I found this interesting article about...
+        
+        [Original Article](https://example.com)
+        
+        ## My Thoughts
+        
+        This is important because...
+    validations:
+      required: true
+      
+  - type: input
+    id: source
+    attributes:
+      label: Source URL (optional)
+      description: Link to the original article if this is a share
+      placeholder: "https://twitter.com/..."
