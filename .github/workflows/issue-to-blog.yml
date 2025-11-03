@@ -6,7 +6,7 @@ on:
 
 jobs:
   create-blog-post:
-    if: contains(github.event.label.name, 'publish')
+    if: contains(github.event.label.name, 'publish') || contains(github.event.label.name, 'blog-post')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,27 +21,61 @@ jobs:
         with:
           script: |
             const issue = context.payload.issue;
-            const body = issue.body;
+            const body = issue.body || '';
             
             // Parse the issue body (GitHub form format)
+            // GitHub Forms format: ### Field Name\n\n[value]\n\n
             const parseField = (fieldName) => {
-              const regex = new RegExp(`### ${fieldName}\\s*\\n\\n([^#]+)`, 'i');
-              const match = body.match(regex);
-              return match ? match[1].trim() : '';
+              // Try multiple patterns to handle different formats
+              const patterns = [
+                new RegExp(`### ${fieldName}\\s*\\n\\n([^#]+?)(?=\\n\\n###|$)`, 'is'),
+                new RegExp(`### ${fieldName}\\s*\\n\\n([^#]+)`, 'i'),
+                new RegExp(`\\*\\*${fieldName}\\*\\*:?\\s*\\n\\n([^#]+?)(?=\\n\\n\\*\\*|$)`, 'is'),
+              ];
+              
+              for (const regex of patterns) {
+                const match = body.match(regex);
+                if (match && match[1]) {
+                  return match[1].trim();
+                }
+              }
+              return '';
             };
             
             const title = parseField('Post Title');
             const description = parseField('Description');
             const category = parseField('Category');
-            const tags = parseField('Tags').split(',').map(t => t.trim()).filter(Boolean);
-            const icon = parseField('Icon \\(optional\\)') || '📄';
+            const tagsStr = parseField('Tags') || '';
+            const tags = tagsStr.split(',').map(t => t.trim()).filter(Boolean);
+            const icon = parseField('Icon \\(optional\\)') || parseField('Icon') || '📄';
             const content = parseField('Content');
-            const source = parseField('Source URL \\(optional\\)');
+            const source = parseField('Source URL \\(optional\\)') || parseField('Source URL') || '';
+            
+            // Validate required fields
+            if (!title || !description || !category || !content) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `❌ Error: Missing required fields.\n\nParsed values:\n- Title: ${title || 'MISSING'}\n- Description: ${description || 'MISSING'}\n- Category: ${category || 'MISSING'}\n- Content: ${content ? 'Present' : 'MISSING'}\n\nPlease check the issue format and try again.`
+              });
+              return;
+            }
             
             // Generate slug from title
             const slug = title.toLowerCase()
               .replace(/[^a-z0-9]+/g, '-')
               .replace(/^-+|-+$/g, '');
+            
+            if (!slug) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `❌ Error: Could not generate a valid slug from the title. Please check the title format.`
+              });
+              return;
+            }
             
             // Determine header image based on category
             const headerImages = {
@@ -53,19 +87,28 @@ jobs:
             
             // Create blog post content
             const date = new Date().toISOString().split('T')[0];
+            
+            // Escape YAML strings properly
+            const escapeYaml = (str) => {
+              if (!str) return '';
+              // Replace newlines with spaces for single-line YAML fields
+              return str.replace(/\n/g, ' ').replace(/"/g, '\\"').replace(/\\/g, '\\\\').trim();
+            };
+            
             const frontmatter = `---
-title: "${title}"
-description: "${description}"
+title: "${escapeYaml(title)}"
+description: "${escapeYaml(description)}"
 pubDate: ${date}
-category: "${category}"
-icon: "${icon}"
-tags: [${tags.map(t => `"${t}"`).join(', ')}]
+category: "${escapeYaml(category)}"
+icon: "${escapeYaml(icon)}"
+tags: [${tags.map(t => `"${escapeYaml(t)}"`).join(', ')}]
 image: "${headerImage}.png"
 draft: false
 ---
+
 `;
             
-            const fullContent = frontmatter + '\n' + content + 
+            const fullContent = frontmatter + content + 
               (source ? `\n\n---\n\n[Original Source](${source})` : '');
             
             // Create the file
@@ -98,27 +141,37 @@ draft: false
             });
             
             // Create the blog post file
-            await github.rest.repos.createOrUpdateFileContents({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              path: filePath,
-              message: `📝 New blog post: ${title}`,
-              content: Buffer.from(fullContent).toString('base64'),
-              branch: repo.default_branch,
-            });
-            
-            // Add comment to issue
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              body: `✅ Blog post created successfully!\n\nView it at: https://puffert.github.io/eriksson/blog/${slug}\n\nThe post will be live after the next deployment (usually within 2-3 minutes).`
-            });
-            
-            // Close the issue
-            await github.rest.issues.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              state: 'closed'
-            });
+            try {
+              await github.rest.repos.createOrUpdateFileContents({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: filePath,
+                message: `📝 New blog post: ${title}`,
+                content: Buffer.from(fullContent).toString('base64'),
+                branch: repo.default_branch,
+              });
+              
+              // Add comment to issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `✅ Blog post created successfully!\n\nView it at: https://vortexnode.net/blog/${slug}\n\nThe post will be live after the next deployment (usually within 2-3 minutes).`
+              });
+              
+              // Close the issue
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed'
+              });
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `❌ Error creating blog post: ${error.message}\n\nPlease check the GitHub Actions logs for more details.`
+              });
+              throw error;
+            }

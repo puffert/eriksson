@@ -25,7 +25,9 @@
 
 ### Step 3: Publish
 1. Submit the issue
-2. Go to **Labels** and add the **"publish"** label
+2. Go to **Labels** and add either:
+   - **"publish"** label, OR
+   - **"blog-post"** label (automatically added from template)
 3. The GitHub Action will automatically:
    - Convert your issue to a blog post
    - Add the appropriate header image
@@ -88,8 +90,9 @@ def test_llm_response(prompt):
 
 ### Post Not Appearing?
 - Check GitHub Actions tab for errors
-- Ensure you added the **"publish"** label
+- Ensure you added the **"publish"** or **"blog-post"** label
 - Wait 2-3 minutes for deployment
+- Check the issue comments for error messages
 
 ### Wrong Header Image?
 - Check the category selection
@@ -129,12 +132,12 @@ Your content here...
 
 Your posts will be available at:
 ```
-https://puffert.github.io/eriksson/blog/[post-title-slug]
+https://vortexnode.net/blog/[post-title-slug]
 ```
 
 Example:
 - Title: "New AI Security Tool Released"
-- URL: `https://puffert.github.io/eriksson/blog/new-ai-security-tool-released`
+- URL: `https://vortexnode.net/blog/new-ai-security-tool-released`
 
 ---
 
