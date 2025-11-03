@@ -3,7 +3,6 @@ title: "Comprehensive Guide to AI Model Testing"
 description: "Exploring the fundamentals of testing artificial intelligence models, from unit tests to integration testing in ML pipelines"
 pubDate: 2024-01-20
 category: "Framework"
-icon: "🔧"
 tags: ["testing", "ML", "framework", "guide"]
 draft: false
 ---

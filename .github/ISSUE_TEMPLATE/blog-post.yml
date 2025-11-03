@@ -40,14 +40,6 @@ body:
       description: Additional tags (comma-separated)
       placeholder: "AI, LLM, security, testing"
       
-  - type: input
-    id: icon
-    attributes:
-      label: Icon (optional)
-      description: Emoji icon for the post
-      placeholder: "🔥"
-      value: "📰"
-      
   - type: textarea
     id: content
     attributes:

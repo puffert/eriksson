@@ -11,11 +11,10 @@ interface Props {
   description: string;
   pubDate: Date;
   category: string;
-  icon?: string;
   image?: string;
 }
 
-const { title, description, pubDate, category, icon, image } = Astro.props;
+const { title, description, pubDate, category, image } = Astro.props;
 
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-US', {
@@ -36,8 +35,7 @@ const formatDate = (date: Date) => {
         <header class="post-header">
             <div class="post-meta">
                 <span class="post-date">{formatDate(pubDate)}</span>
-                {icon && <span class="post-category pixel-icon">{icon} {category.toUpperCase()}</span>}
-                {!icon && <span class="post-category">{category.toUpperCase()}</span>}
+                <span class="post-category">{category.toUpperCase()}</span>
             </div>
             <h1 class="post-title">{title}</h1>
         </header>

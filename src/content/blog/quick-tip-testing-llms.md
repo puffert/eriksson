@@ -3,7 +3,6 @@ title: "Quick Tip: Testing LLM Outputs"
 description: "A quick guide to validating LLM responses programmatically"
 pubDate: 2024-01-15
 category: "Testing"
-icon: "🧪"
 tags: ["LLM", "testing", "quick-tip"]
 draft: false
 ---

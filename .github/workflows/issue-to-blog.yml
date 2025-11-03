@@ -74,7 +74,7 @@ jobs:
             const category = parseField('Category');
             const tagsStr = parseField('Tags') || '';
             const tags = tagsStr.split(',').map(t => t.trim()).filter(Boolean);
-            const icon = parseField('Icon \\(optional\\)') || parseField('Icon') || '📄';
+            // Icon field removed
             const content = parseField('Content');
             const source = parseField('Source URL \\(optional\\)') || parseField('Source URL') || '';
             
@@ -160,14 +160,13 @@ jobs:
             const tagsYaml = tags && tags.length > 0 ? tags.map(t => yamlString(t)).join(', ') : '';
 
             // Build frontmatter with minimal interpolation to avoid YAML parser confusion
-            const frontmatter = `---
+const frontmatter = `---
 title: ${yamlString(title)}
 description: ${yamlString(description)}
 pubDate: ${date}
 category: ${yamlString(category)}
-icon: ${yamlString(icon)}
 tags: [${tagsYaml}]
-image: ${yamlString(`${headerImage}.png`)}
+image: ${yamlString(headerImage + '.png')}
 draft: false
 ---
 

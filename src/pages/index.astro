@@ -44,9 +44,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
                                 day: '2-digit'
                             }).format(post.data.pubDate)}
                         </span>
-                        <span class="post-category pixel-icon">
-                            {post.data.icon || ''} {post.data.category.toUpperCase()}
-                        </span>
+                        <span class="post-category">{post.data.category.toUpperCase()}</span>
                     </div>
                     <h3 class="post-title">{post.data.title}</h3>
                     <p class="post-excerpt">{post.data.description}</p>
