@@ -6,6 +6,10 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const recentPosts = allPosts
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL 
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title="Vortex Node">
@@ -46,12 +50,12 @@ const recentPosts = allPosts
                     </div>
                     <h3 class="post-title">{post.data.title}</h3>
                     <p class="post-excerpt">{post.data.description}</p>
-                    <a href={`/blog/${post.slug}`} class="post-link">READ MORE →</a>
+                    <a href={`${baseUrl}blog/${post.slug}`} class="post-link">READ MORE →</a>
                 </article>
             ))}
         </div>
         <div style="text-align: center; margin-top: 40px;">
-            <a href="/blog" class="post-link" style="font-size: 1.2rem;">VIEW ALL POSTS →</a>
+            <a href={`${baseUrl}blog`} class="post-link" style="font-size: 1.2rem;">VIEW ALL POSTS →</a>
         </div>
     </section>
 
