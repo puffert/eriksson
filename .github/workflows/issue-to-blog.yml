@@ -125,13 +125,14 @@ jobs:
               return str.replace(/\n/g, ' ').replace(/"/g, '\\"').replace(/\\/g, '\\\\').trim();
             };
             
+            // Format date properly for YAML (YYYY-MM-DD format)
             const frontmatter = `---
 title: "${escapeYaml(title)}"
 description: "${escapeYaml(description)}"
 pubDate: ${date}
 category: "${escapeYaml(category)}"
 icon: "${escapeYaml(icon)}"
-tags: [${tags.map(t => `"${escapeYaml(t)}"`).join(', ')}]
+tags: [${tags.length > 0 ? tags.map(t => `"${escapeYaml(t)}"`).join(', ') : ''}]
 image: "${headerImage}.png"
 draft: false
 ---
@@ -181,12 +182,12 @@ draft: false
                 branch: repo.default_branch,
               });
               
-              // Add comment to issue
+              // Add comment to issue with details
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                body: `✅ Blog post created successfully!\n\nView it at: https://vortexnode.net/blog/${slug}\n\nThe post will be live after the next deployment (usually within 2-3 minutes).`
+                body: `✅ Blog post created successfully!\n\n**File created:** \`${filePath}\`\n**Slug:** \`${slug}\`\n**Category:** ${category}\n**Header Image:** ${headerImage}.png\n\nView it at: https://vortexnode.net/blog/${slug}\n\nThe post will be live after the deployment workflow completes (usually within 2-3 minutes). Check the [Actions tab](https://github.com/${context.repo.owner}/${context.repo.repo}/actions) to see deployment status.`
               });
               
               // Close the issue
