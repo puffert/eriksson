@@ -1,0 +1,166 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  icon?: string;
+}
+
+const { title, description, pubDate, category, icon } = Astro.props;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
+};
+---
+
+<BaseLayout title={title} description={description}>
+    <article class="blog-post">
+        <header class="post-header">
+            <div class="post-meta">
+                <span class="post-date">{formatDate(pubDate)}</span>
+                {icon && <span class="post-category pixel-icon">{icon} {category.toUpperCase()}</span>}
+                {!icon && <span class="post-category">{category.toUpperCase()}</span>}
+            </div>
+            <h1 class="post-title">{title}</h1>
+        </header>
+        
+        <div class="post-content">
+            <slot />
+        </div>
+
+        <footer class="post-footer">
+            <a href="/blog" class="back-link">← BACK TO POSTS</a>
+        </footer>
+    </article>
+</BaseLayout>
+
+<style>
+    .blog-post {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .post-header {
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--card-border);
+        padding-bottom: 20px;
+    }
+
+    .post-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .post-content {
+        color: var(--terminal-beige);
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+
+    .post-content :global(h2) {
+        font-family: 'VT323', 'Orbitron', monospace;
+        font-size: 2rem;
+        color: var(--terminal-beige);
+        margin: 40px 0 20px;
+        text-shadow: 0 0 3px rgba(200, 200, 160, 0.3);
+    }
+
+    .post-content :global(h3) {
+        font-family: 'VT323', 'Orbitron', monospace;
+        font-size: 1.5rem;
+        color: var(--terminal-beige);
+        margin: 30px 0 15px;
+    }
+
+    .post-content :global(p) {
+        margin-bottom: 20px;
+    }
+
+    .post-content :global(code) {
+        background: rgba(0, 204, 221, 0.1);
+        color: var(--neon-cyan);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.9em;
+    }
+
+    .post-content :global(pre) {
+        background: var(--terminal-dark);
+        border: 1px solid var(--card-border);
+        padding: 20px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 20px 0;
+    }
+
+    .post-content :global(pre code) {
+        background: transparent;
+        color: var(--terminal-beige);
+        padding: 0;
+    }
+
+    .post-content :global(a) {
+        color: var(--neon-cyan);
+        text-decoration: none;
+        text-shadow: 0 0 3px rgba(0, 204, 221, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .post-content :global(a:hover) {
+        color: var(--terminal-beige);
+        text-shadow: 0 0 3px rgba(200, 200, 160, 0.3);
+    }
+
+    .post-content :global(ul),
+    .post-content :global(ol) {
+        margin: 20px 0;
+        padding-left: 30px;
+    }
+
+    .post-content :global(li) {
+        margin-bottom: 10px;
+    }
+
+    .post-content :global(blockquote) {
+        border-left: 3px solid var(--neon-cyan);
+        padding-left: 20px;
+        margin: 20px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    .post-footer {
+        margin-top: 60px;
+        padding-top: 20px;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .back-link {
+        color: var(--neon-cyan);
+        text-decoration: none;
+        font-family: 'VT323', monospace;
+        font-size: 1.2rem;
+        text-shadow: 0 0 3px rgba(0, 204, 221, 0.3);
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .back-link:hover {
+        color: var(--terminal-beige);
+        transform: translateX(-5px);
+    }
+</style>

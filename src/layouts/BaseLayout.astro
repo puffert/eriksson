@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "AI Testing Labs - Retro-futuristic blog about AI testing and validation" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content={description} />
+    <title>{title} | AI Testing Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="vortex-overlay"></div>
+    <div class="crt-scanlines"></div>
+    
+    <!-- Animated server rack lights - Left side -->
+    <div class="server-lights left-server">
+        <div class="light blue"></div>
+        <div class="light green"></div>
+        <div class="light blue"></div>
+        <div class="light green"></div>
+        <div class="light blue"></div>
+        <div class="light green"></div>
+        <div class="light orange"></div>
+        <div class="light yellow"></div>
+        <div class="light red"></div>
+    </div>
+    <!-- Animated server rack lights - Right side -->
+    <div class="server-lights right-server">
+        <div class="light green"></div>
+        <div class="light blue"></div>
+        <div class="light green"></div>
+        <div class="light blue"></div>
+        <div class="light green"></div>
+        <div class="light blue"></div>
+        <div class="light yellow"></div>
+        <div class="light orange"></div>
+        <div class="light red"></div>
+    </div>
+
+    <header class="main-header">
+        <div class="header-content">
+            <a href="/" class="logo-link">
+                <h1 class="logo">
+                    <span class="terminal-prompt">></span> AI_TESTING_LABS
+                </h1>
+            </a>
+            <nav class="main-nav">
+                <a href="/" class="nav-link">HOME</a>
+                <a href="/blog" class="nav-link">POSTS</a>
+                <a href="/#about" class="nav-link">ABOUT</a>
+                <a href="/#contact" class="nav-link">CONTACT</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <slot />
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 AI_TESTING_LABS | <span class="footer-status">[SYSTEM_ONLINE]</span></p>
+        </div>
+    </footer>
+
+    <script is:inline src="/script.js"></script>
+</body>
+</html>
+
+<style>
+    .logo-link {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>

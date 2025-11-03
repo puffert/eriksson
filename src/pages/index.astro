@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="AI Testing Labs">
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h2 class="hero-title">
+                <span class="glitch" data-text="EXPLORING AI">EXPLORING AI</span>
+            </h2>
+            <p class="hero-subtitle">Testing • Debugging • Learning</p>
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="terminal-button"></span>
+                    <span class="terminal-title">SYSTEM_STATUS.EXE</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="prompt">></span>
+                        <span class="command">initialize_ai_testing_protocol</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">[OK] Neural networks activated</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">[OK] Test frameworks loaded</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output blinking-cursor">[READY] System operational</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="posts" class="posts-section">
+        <h2 class="section-title">RECENT POSTS</h2>
+        <div class="posts-grid">
+            {recentPosts.map((post) => (
+                <article class="post-card">
+                    <div class="post-header">
+                        <span class="post-date">
+                            {new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit'
+                            }).format(post.data.pubDate)}
+                        </span>
+                        <span class="post-category pixel-icon">
+                            {post.data.icon || ''} {post.data.category.toUpperCase()}
+                        </span>
+                    </div>
+                    <h3 class="post-title">{post.data.title}</h3>
+                    <p class="post-excerpt">{post.data.description}</p>
+                    <a href={`/blog/${post.slug}`} class="post-link">READ MORE →</a>
+                </article>
+            ))}
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/blog" class="post-link" style="font-size: 1.2rem;">VIEW ALL POSTS →</a>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2 class="section-title">ABOUT THE LAB</h2>
+        <div class="about-content">
+            <p class="about-text">
+                Welcome to AI Testing Labs, a cyberpunk-inspired educational blog dedicated to 
+                exploring the cutting edge of artificial intelligence testing and validation. 
+                Here, we dive deep into testing methodologies, frameworks, and tools that help 
+                ensure AI systems are robust, reliable, and ready for production.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" data-target={allPosts.length}>0</div>
+                    <div class="stat-label">POSTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">TESTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">TOOLS</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">CONNECT</h2>
+        <div class="contact-content">
+            <p class="contact-text">Join the network. Share knowledge. Build better AI.</p>
+            <div class="contact-links">
+                <a href="https://github.com/puffert" class="contact-link" target="_blank">
+                    <span class="link-icon">[GITHUB]</span>
+                </a>
+                <a href="https://twitter.com" class="contact-link" target="_blank">
+                    <span class="link-icon">[TWITTER]</span>
+                </a>
+                <a href="mailto:contact@example.com" class="contact-link">
+                    <span class="link-icon">[EMAIL]</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</BaseLayout>
