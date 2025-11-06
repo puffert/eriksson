@@ -1,5 +1,5 @@
 ---
-title: "Continuous Changes and Testing Cadence Article 7"
+title: "Continuous Changes and Testing Cadence Article 7 in the scope series"
 description: "Point-in-time assessments work for static systems. AI systems change constantly.  What gets missed:  Model updates (by providers or through retraining) Prompt modifications Integration changes Training data updates Testing in January is obsolete by March if the system changed."
 pubDate: 2025-11-06
 category: "Offensive Security"
