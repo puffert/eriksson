@@ -1,5 +1,5 @@
 ---
-title: "Logging, Monitoring, and Detection Article 8"
+title: "Logging, Monitoring, and Detection Article 8 in the scope serie"
 description: "Assessments find vulnerabilities. Logs detect exploitation. Most scoping focuses on finding, not detecting.  What gets missed:  What security events are logged Log retention and security Monitoring and alerting capabilities Incident investigation procedures Finding vulnerabilities matters less if exploitation goes undetected."
 pubDate: 2025-11-06
 category: "Offensive Security"
