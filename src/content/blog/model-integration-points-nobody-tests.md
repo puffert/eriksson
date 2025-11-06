@@ -1,5 +1,5 @@
 ---
-title: "Model Integration Points Nobody Tests"
+title: "Model Integration Points Nobody Tests Article 1 in the scope serie"
 description: "Article 1: Model Integration Points Nobody Tests Most scoping focuses on the model while ignoring the integration layer where actual vulnerabilities exist. What gets missed:  How user input becomes model prompts (string concatenation, JSON encoding, validation) How applications authenticate to model APIs (API key storage, rotation) How model outputs get processed (HTML rendering, code execution, database queries) Rate limiting, error handling, session management  The model does what it's designed to do. The vulnerabilities are in how applications integrate with models."
 pubDate: 2025-11-06
 category: "Offensive Security"
