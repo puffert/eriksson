@@ -294,6 +294,7 @@ The second scope identifies specific components, technologies, and implementatio
 The model is one component in a larger system. Integration points between components are where vulnerabilities exist. Scope documents that focus exclusively on "the AI" or "the LLM" miss most of the attack surface.
 
 Effective AI security scoping requires mapping data flow from user input to model to output to downstream use, identifying each processing step as potential attack surface, and specifying concrete components and implementations to test.
+
 ---
 
 [Original Source](_No response_)
