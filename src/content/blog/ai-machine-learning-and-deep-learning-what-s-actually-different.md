@@ -72,9 +72,9 @@ Concrete examples
 
 - Computer Vision: interpreting images and video
 
--Robotics: perception + planning + control
+- Robotics: perception + planning + control
 
--(Historical) Expert Systems: hand-crafted rules for narrow domains
+- (Historical) Expert Systems: hand-crafted rules for narrow domains
 
 
 AI augments human capabilities—better decisions, faster analysis, and automation.
