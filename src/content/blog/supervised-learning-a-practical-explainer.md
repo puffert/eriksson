@@ -8,225 +8,121 @@ image: "AITesting.png"
 draft: false
 ---
 
-Trying to understand supervised learning can be tough.
+Trying to understand supervised learning can be tough. This is my notes trying to explain it.
 
-Supervised learning is the branch of ML where each example already comes with the correct answer. The goal is to learn a rule that maps features (inputs) --> label (output) in a way that holds up on new data, not just the data you trained on.
+Supervised learning is the branch of ML where each example already comes with the correct answer. The goal is to learn a rule that maps **features** (inputs) --> **label** (output) in a way that holds up on new data, not just the data you trained on.
 
-A simple analogy helps which I saw on HTB.
+A simple analogy helps which I saw on HTB. 
 
-_Teaching a child fruits: show an apple and say “apple,” an orange and say “orange.” Over time the child connects characteristics (color, shape, size) --> correct name and can label new fruits._
-
-Supervised learning follows the same pattern: provide labeled examples, learn the mapping, predict for unseen cases.
-
+_Teaching a child fruits: show an apple and say “apple,” an orange and say “orange.” Over time the child connects characteristics (color, shape, size) --> correct name and can label new fruits. Supervised learning follows the same pattern: provide labeled examples, learn the mapping, predict for unseen cases._
 
 ---
 
-## Everyday security examples
-
-Classification — choose a category
-
-- Phishing detector: email --> phish / not phish.
-Features: sender domain age, URL patterns, SPF/DKIM pass, tokens in subject/body.
-
-- Malware family ID: file --> family A / B / C.
-Features: extracted opcodes, imported APIs, packer flags, section entropy.
-
-- DGA vs. benign domains: domain --> DGA / legit.
-Features: length, vowel–consonant runs, n-gram stats, NXDOMAIN rate.
-
-- Login anomaly: auth event --> suspicious / normal.
-Features: geo velocity, device fingerprint, hour of day, failed-attempt streaks.
-
-
-## Regression — predict a number
-
-- Alert priority score: event --> 0–100 risk.
-- Features: MITRE technique, asset criticality, blast radius, threat-intel hits.
-
-- Time to compromise estimate: host posture --> minutes or hours.
-- Features: exposed services, patch lag, privilege-graph centrality.
-
-
+## What problem we are solving
+We want the computer to make the same simple decisions a human would, but faster and at scale.  
+Example: sort emails --> spam or not spam.
 
 ---
 
-## Core terms — security flavored
+## Two common kinds of problems
 
-- Training data: labeled alerts or logs (e.g., SOC-confirmed phish vs. clean).
+**Classification**  
 
-- Features: what you extract (headers, n-grams, counts, graph metrics).
+- Output is a category.  
+- Example: email --> spam or not spam.  
+  - Features you might use: contains a URL, words like **urgent** or **password**, sender is unknown, many recipients.
 
-- Label: the ground truth (phish / not, family name, risk score).
+**Regression**  
 
-- Model: mapping from features --> label (logistic regression, trees, boosting, neural nets).
-
-- Training: fit parameters to reduce error on labeled events.
-
-Prediction vs. inference: prediction = score today’s email; inference = which features drove the score.
-
-
+- Output is a number.  
+- Example: score an alert 0 --> 100 so the SOC can sort the queue.  
+  - Features you might use: asset criticality, number of failed logins, known bad indicators.
 
 ---
 
-## Workflow — threat ops version
+## The pieces in plain words
 
-1. Define the decision: triage phish, score alerts, flag DGAs.
-
-
-2. Collect and clean: dedupe, parse, normalize timezones, handle class imbalance.
-
-
-3. Split wisely: train / validation / test with time order preserved.
-
-
-4. Train and tune: try a few models; use stratified or time-aware cross-validation.
-
-
-5. Pick thresholds to match SOC capacity so the queue is workable.
-
-
-6. Test once on a sealed, later time window; then deploy.
-
-
-
+- **Training data:** past examples with answers. For spam, old emails that analysts already marked spam or not.  
+- **Features:** the clues we extract. For spam: has link, has “urgent,” sender age, suspicious domain.  
+- **Label:** the answer we want to predict. For spam: spam or not.  
+- **Model:** a rule the computer learns, features --> label.  
+- **Training:** the model practices on the past examples until it makes fewer mistakes.  
+- **Prediction:** use the trained model on today’s emails.  
+- **Inference:** explain which clues mattered for a decision.
 
 ---
 
-## Evaluation that matches security reality
+## Step by step using the spam example
 
-- Classification: Precision, Recall, F1, PR-AUC for rare attacks.
-
-- Phish example: if missing one hurts, raise Recall; if analyst time is scarce, raise Precision.
-
-
-- Regression: MAE and RMSE for error size, R² for explained variance.
-
-- Cost-sensitive view: weigh false negatives vs. false positives to fit your use case.
-
-
+1. **Collect:** a month of labeled emails.  
+2. **Prepare:** extract simple clues like “has URL,” count of words, presence of “urgent.”  
+3. **Split:** older emails for training, newer emails for validation and a final test.  
+4. **Train:** try a few simple models.  
+5. **Tune:** pick thresholds so the number of alerts fits analyst capacity.  
+6. **Test:** run once on the sealed test set to be sure it generalizes.  
+7. **Use:** tag new emails based on the score.
 
 ---
 
-## Generalization, overfitting and underfitting
-
-### Overfitting — memorizing noise
-
-In practice: the model learns your company’s quirks and fails on a new tenant or next quarter.
-
-- Symptoms: great training score, poor future-week score.
-
-- Causes: model too complex, tiny dataset, data leakage, environment-specific tokens.
-
-Fixes:
-
-- Regularization: L2 or L1 to keep weights small and drop noisy lexical features.
-
-- Early stopping on a later validation slice.
-
-- Simpler model or feature pruning to remove brittle identifiers.
-
-- Time-split cross-validation and grouped CV by user/host to avoid identity leakage.
-
-- Data augmentation and more diverse negatives.
-
-
-
-### Underfitting — too simple to learn the pattern
-
-In practice: linear rules on clearly nonlinear signals.
-
-Fixes: richer features, more expressive models, better tuning, longer training.
-
-
-### Bias–variance dartboard
-
-High bias = darts clustered away from center --> underfit.
-
-High variance = darts scattered everywhere --> overfit.
-
-Tune complexity and regularization until validation on future data is close to training.
-
-
+## How we measure success
+- **Accuracy:** of all emails, how many did we get right.  
+- **Precision:** when we say spam, how often it really is spam.  
+- **Recall:** of all real spam, how much we catch.  
+- **F1:** one number that balances precision and recall.  
+Tip: if missing bad emails is costly, push recall up; if analyst time is scarce, push precision up.
 
 ---
 
-## Cross-validation — time aware
+## Overfitting and underfitting
+**Overfitting**  
+- **Idea:** the model memorizes quirks in the training data and fails on new data.  
+- **Spam example:** it learns a specific internal hostname or a weekly newsletter and treats those quirks as “always spam.”  
+- **You can spot it:** very high training score --> much lower validation or test score.  
+- **Fixes:**  
+  - Use simpler features and a simpler model.  
+  - Add **regularization** so the model prefers simpler rules.  
+  - **Early stopping** when validation stops improving.  
+  - Train on more varied data.
 
-Rolling or expanding windows: train on earlier months, validate on the next month, slide forward.
+**Underfitting**  
+- **Idea:** the model is too simple and misses obvious patterns.  
+- **You can spot it:** low training score and low validation score.  
+- **Fixes:** add better features, allow a more flexible model, tune a bit more.
 
-Stratified folds for class balance; grouped folds by user/host/campaign to prevent leakage.
-
-Nested CV when comparing many models to avoid optimistic bias.
-
-
-
----
-
-## Data leakage — silent model killer in security
-
-Examples: fitting scalers on the full dataset, using post-verdict fields, mixing future IOCs when predicting the past.
-
-Rule: fit preprocessing only on training folds; keep the test set strictly future.
-
-
-
----
-
-## Regularization — quick security takes
-
-- L2 Ridge / weight decay: smooths weights; great for numeric telemetry.
-
-- L1 Lasso: induces sparsity; ideal for high-dimensional text like tokens and n-grams.
-
-- Elastic Net: a stable, sparse blend.
-
-- Dropout and early stopping: strong defaults for neural nets on URLs, binaries, sequences.
-
-
+**Bias --> variance as a dartboard**  
+- High bias --> darts tightly grouped but far from center.  
+- High variance --> darts all over.  
+- Aim for a small, tight cluster near the bullseye on the test set.
 
 ---
 
-## Concept drift and adversaries
-
-Detect drift: track metrics by week, calibration curves, alert volumes.
-
-Mitigate: periodic retraining, sliding windows, refreshed hard negatives, a robust baseline.
-
-Adversarial thinking: avoid brittle string features; favor patterns like length stats, character runs, graph structure.
-
-
+## Cross validation you can trust
+- For security data, use **time order**. Train on earlier weeks --> validate on the next week.  
+- This mirrors real life: yesterday teaches today.
 
 ---
 
-## Security case studies
+## Regularization explained simply
+Regularization is a small penalty for complicated rules so the model prefers simpler ones.  
+- **L2:** gently pulls weights toward zero --> smoother rules.  
+- **L1:** pushes some weights to exactly zero --> keeps only the most useful clues.  
+- Works well when features are many and noisy, like words in emails.
 
-### Phishing email — classification
+---
 
-Features: domain age, SPF/DKIM, URL token stats, brand-lookalike score.
+## Tiny checklist for a first spam filter
+- Keep features simple and readable: has URL, has “urgent,” sender age, suspicious domain.  
+- Split by time so training is older and testing is newer.  
+- Pick thresholds that match how many alerts your team can handle.  
+- Watch training vs. validation. Big gap --> overfitting.  
+- Retrain on a schedule because language and tactics change.
 
-Label: phish / not.
+---
 
-Metrics: F1, PR-AUC; pick a threshold that caps daily triage load.
-
-Pitfall: leakage from user-reported signals; strip post-decision fields.
-
-
-### DGA domain — classification
-
-Features: length, entropy, vowel–consonant patterns, n-grams, NXDOMAIN rate.
-
-Label: DGA / benign.
-
-Pitfall: overfitting to one family; fix with regularization and diverse families.
-
-
-### Alert prioritization — regression
-
-Features: MITRE technique, asset criticality, lateral-movement proximity, external intel.
-
-Label: analyst priority 0–100 or incident severity.
-
-Metrics: MAE for average points off; recalibrate periodically for drift.
+## Why this is useful for security
+- Turns everyday analyst decisions into consistent rules.  
+- Surfaces the right items first and reduces manual toil.  
+- Stays explainable when you choose simple, human-readable 
 
 ---
 
