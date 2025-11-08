@@ -1,6 +1,6 @@
 ---
-title: "Linear regression"
-description: "Notes about linear regression"
+title: "Linear and Logistic regression"
+description: "Notes about Linear and Logistic regression"
 pubDate: 2025-11-08
 category: "Learning"
 tags: ["_No response_"]
@@ -111,8 +111,6 @@ y = b0 + b1 x1 + b2 x2 + ... + bn xn
 Linear regression is a transparent baseline for scoring, forecasting, and capacity planning. Know where it works, where it breaks, and how attackers might steer it. That foundation makes you better at both defending and testing more complex AI systems.
 
 ---
-
-# Logistic Regression for AI Security Professionals
 
 ## What is Logistic Regression
 
