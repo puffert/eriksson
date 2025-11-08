@@ -1,7 +1,7 @@
 ---
 title: "Supervised learning — a practical explainer"
 description: "What supervised learning is, how it works in practice, core algorithms, evaluation, and common pitfalls — explained plainly"
-pubDate: 2025-11-07
+pubDate: 2025-11-08
 category: "Learning"
 tags: ["_No response_"]
 image: "AITesting.png"
