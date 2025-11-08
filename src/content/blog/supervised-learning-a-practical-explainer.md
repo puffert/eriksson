@@ -21,7 +21,7 @@ Supervised learning follows the same pattern: provide labeled examples, learn th
 
 ---
 
-## Everyday security examples so it clicks
+## Everyday security examples
 
 Classification — choose a category
 
@@ -68,7 +68,7 @@ Prediction vs. inference: prediction = score today’s email; inference = which 
 
 ---
 
-#€ Workflow — threat ops version
+## Workflow — threat ops version
 
 1. Define the decision: triage phish, score alerts, flag DGAs.
 
@@ -94,7 +94,7 @@ Prediction vs. inference: prediction = score today’s email; inference = which 
 
 ## Evaluation that matches security reality
 
-C- lassification: Precision, Recall, F1, PR-AUC for rare attacks.
+- Classification: Precision, Recall, F1, PR-AUC for rare attacks.
 
 - Phish example: if missing one hurts, raise Recall; if analyst time is scarce, raise Precision.
 
