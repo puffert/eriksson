@@ -54,7 +54,7 @@ Entropy(S) = - Σ p_i * log2(p_i)
 
 Example with 0.6 and 0.4
 
-Entropy = - (0.6 * log2(0.6) + 0.4 * log2(0.4)) ≈ 0.971
+Entropy ≈ 0.971
 
 ### Information gain
 How much entropy drops after a split.
@@ -63,42 +63,65 @@ Gain(S, A) = Entropy(S) - Σ ( |S_v| / |S| ) * Entropy(S_v)
 
 Pick the feature with the highest gain for the next question.
 
-## Small Tennis Example
+## Small Phishing Example
 
-Goal predict **Play Tennis** yes or no using **Outlook, Temperature, Humidity, Wind**.  
-A common first split is **Outlook**:
-- **Overcast** --> mostly yes  
-- **Rainy** --> next question could be **Wind**  
-- **Sunny** --> next question could be **Humidity**
+Goal classify **Email** --> **phish** or **not phish** using simple, human readable clues  
+**Features** Has_URL yes or no, URL_Count integer, Contains_Urgent yes or no, Sender_Reputation high or low, Domain_Age_Days number
 
-Follow the questions until leaves predict **Yes** or **No**. That is exactly how a decision tree works on any dataset.
+A plausible first few splits
+
+1. **Root split** `Has_URL`  
+   - **No** --> many legitimate corporate emails have no links  
+     - **Leaf** predict **not phish** with probability from class ratio in this leaf  
+   - **Yes** --> move to next best question
+
+2. **Second split on Yes branch** `Sender_Reputation`  
+   - **High** --> likely legitimate marketing or internal notice  
+     - Go deeper only if needed  
+   - **Low** --> move to next best question
+
+3. **Third split on Low reputation** `Contains_Urgent`  
+   - **Yes** --> messages with pushy language are riskier  
+     - Move to next best question  
+   - **No** --> check link volume
+
+4. **Fourth split** `URL_Count`  
+   - **URL_Count >= 2** --> **Leaf** predict **phish**  
+     - Example leaf stats 90 phish, 10 not phish --> probability phish 0.90  
+   - **URL_Count < 2** --> consider **Domain_Age_Days**
+
+5. **Fifth split** `Domain_Age_Days`  
+   - **< 30** --> **Leaf** predict **phish**  
+   - **>= 30** --> **Leaf** predict **not phish**
+
+**How to read a path**  
+`Has_URL = Yes` --> `Sender_Reputation = Low` --> `Contains_Urgent = Yes` --> `URL_Count >= 2`  
+This path lands in a leaf that outputs **phish** with its probability and class counts, which you can show in a SOC explanation.
+
+This is the same mechanics any tree follows the model picks the split that best separates phish from not phish at each step until the leaves are sufficiently pure.
 
 ## Security Examples That Click
 
 **Classification**
 
 - **Spam or not spam**  
-  - **Features:** has URL, link count, words like urgent or password, unknown sender  
-  - **Prediction:** spam or not spam  
-  - **Leaf output:** class and probability from class ratios in the leaf
-
-- **Phishing or not**  
-  - **Features:** sender reputation, domain age, brand lookalike score, URL count  
-  - **Prediction:** phish or not phish
+  - **Features** has URL, link count, words like urgent or password, unknown sender  
+  - **Prediction** spam or not spam  
+  - **Leaf output** class and probability from class ratios in the leaf
 
 - **Suspicious login or normal**  
-  - **Features:** geo velocity, new device, hour of day, failed attempt streak  
-  - **Prediction:** suspicious or normal
+  - **Features** geo velocity, new device, hour of day, failed attempt streak  
+  - **Prediction** suspicious or normal
 
 **Regression**
 
 - **Risk score**  
-  - **Features:** MITRE technique, asset criticality, privilege level  
-  - **Output:** score 0 --> 100 for triage ordering
+  - **Features** MITRE technique, asset criticality, privilege level  
+  - **Output** score 0 --> 100 for triage ordering
 
 - **Expected bandwidth**  
-  - **Features:** time of day, weekday flag, active sessions  
-  - **Output:** Mbps baseline for anomaly detection
+  - **Features** time of day, weekday flag, active sessions  
+  - **Output** Mbps baseline for anomaly detection
 
 ## Training Workflow For A Tree
 
@@ -122,16 +145,16 @@ Follow the questions until leaves predict **Yes** or **No**. That is exactly how
 
 Trees can grow too deep and memorize noise.
 
-**Signs**
+**Signs**  
 - Excellent training accuracy --> worse validation accuracy  
 - Very deep tree with many tiny leaves
 
-**Causes**
+**Causes**  
 - Deep unrestricted growth  
 - Tiny leaves that capture quirks  
 - Data leakage
 
-**Fixes**
+**Fixes**  
 - **Limit depth** `max_depth`  
 - **Minimum samples** `min_samples_split`, `min_samples_leaf`  
 - **Limit features per split** `max_features`  
@@ -142,10 +165,10 @@ Trees can grow too deep and memorize noise.
 
 If the tree is too shallow it misses structure.
 
-**Signs**
+**Signs**  
 - Low training and validation accuracy
 
-**Fixes**
+**Fixes**  
 - Allow deeper trees within reason  
 - Add better features that capture the signal  
 - Consider ensembles like random forests or gradient boosting when single tree capacity is not enough
@@ -203,7 +226,6 @@ If the tree is too shallow it misses structure.
 - Control overfitting with depth limits, leaf size, feature limits, and pruning  
 - Choose metrics and thresholds that fit operational realities  
 - Expect drift and plan for retraining
-
 ---
 
 [Original Source](_No response_)
