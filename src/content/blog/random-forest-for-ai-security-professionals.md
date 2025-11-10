@@ -2,9 +2,9 @@
 title: "Random forest for AI Security Professionals"
 description: "Continue on Supervised algorithms for ML"
 pubDate: 2025-11-10
-category: "Offensive Security"
+category: "Learning"
 tags: ["_No response_"]
-image: "offensive.png"
+image: "AITesting.png"
 draft: false
 ---
 
