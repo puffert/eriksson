@@ -8,8 +8,6 @@ image: "offensive.png"
 draft: false
 ---
 
-# Random Forests for AI Security Professionals
-
 ## What is a Random Forest
 A random forest is an **ensemble** of many decision trees that vote. Each tree learns on a slightly different sample of the data and a random subset of features. The forest averages their opinions to make a sturdier prediction.
 
