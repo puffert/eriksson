@@ -2,14 +2,11 @@
 title: "DBSCAN and HDBSCAN for AI security professionals"
 description: "DBSCAN and HDBSCAN for AI security professionals Unsupervised learning algorithm"
 pubDate: 2025-11-12
-category: "Offensive Security"
+category: "Learning"
 tags: ["_No response_"]
-image: "offensive.png"
+image: "AITesting.png"
 draft: false
 ---
-
-# DBSCAN and HDBSCAN for AI Security Professionals
-
 ## What they are
 DBSCAN and HDBSCAN are **density based** clustering algorithms. They group points that live in **high density** regions and mark **noise** that does not belong to any group.
 
