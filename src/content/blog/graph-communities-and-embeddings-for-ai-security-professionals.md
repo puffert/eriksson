@@ -103,8 +103,6 @@ After embedding --> cluster with **HDBSCAN** or **k-means** or score anomalies b
 ## Takeaways
 Use **community detection** to map operators and cohorts. Use **embeddings** to bring graph context into standard clustering and anomaly tools. Weight edges wisely, curb hubs, validate stability over time, and tie results to concrete analyst workflows.
 
-```0
-
 ---
 
 [Original Source](_No response_)
