@@ -12,7 +12,7 @@ People use these terms interchangeably. They shouldn’t.
 
 _TL;DR: AI is the goal (systems that do “intelligent” tasks). ML is how most modern AI is built (learn from data). DL is one family of ML methods (multi-layer neural networks) that dominates vision, speech, and language._
 
-I did the Red Team AI path on Hack The Box. They explained how Artificial Intelligence (AI), Machine Learning (ML), and Deep Learning (DL) relate. If you’re assessing AI systems, getting these fundamentals right helps you reason about risks and attack surfaces.
+If you’re assessing AI systems, getting  fundamentals right helps you reason about risks and attack surfaces. How Artificial Intelligence (AI), Machine Learning (ML), and Deep Learning (DL) relate is important.
 
 AI, ML, and DL are related but distinct. Understanding the differences matters when you’re building systems, evaluating tools, or making technical decisions.
 

@@ -3,7 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-const recentPosts = allPosts
+// Filter to only show News and Offensive Security posts (excluding scoping series)
+const postsPosts = allPosts.filter((post) => {
+  if (post.data.category !== 'News' && post.data.category !== 'Offensive Security') {
+    return false;
+  }
+  // Exclude scoping series posts (they belong in Learning)
+  const slug = post.slug.toLowerCase();
+  if (slug.includes('scoping') || slug.includes('article-') || slug.includes('scope-series') || 
+      slug.includes('model-integration') || slug.includes('multi-turn') || 
+      slug.includes('function-calling') || slug.includes('third-party-model') ||
+      slug.includes('training-pipeline') || slug.includes('ai-safety-as-security') ||
+      slug.includes('continuous-changes') || slug.includes('logging-monitoring') ||
+      slug.includes('ai-security-rfps') || slug.includes('ai-incident-response')) {
+    return false;
+  }
+  return true;
+});
+const recentPosts = postsPosts
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
 
