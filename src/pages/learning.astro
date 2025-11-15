@@ -19,8 +19,28 @@ const learningPosts = allPosts.filter((post) => {
   return false;
 });
 
+// Helper function to check if a post is an external resource
+async function isExternalResource(post: typeof learningPosts[0]): Promise<boolean> {
+  const body = post.body || '';
+  
+  // Check for common external resource patterns in the markdown body
+  if (body.includes('[Original Source]') || body.includes('Original Source') ||
+      body.includes('original source') || body.includes('Original source')) {
+    return true;
+  }
+  
+  // Check slug patterns for known external resources
+  const slug = post.slug.toLowerCase();
+  if (slug.includes('ibm-video') || slug.includes('google-research') || 
+      slug.includes('owasp-top-10') || slug.includes('whisper-leak')) {
+    return true;
+  }
+  
+  return false;
+}
+
 // Function to categorize posts into series
-function categorizePost(post: typeof learningPosts[0]) {
+async function categorizePost(post: typeof learningPosts[0]): Promise<string> {
   const title = post.data.title.toLowerCase();
   const slug = post.slug.toLowerCase();
   
@@ -57,19 +77,36 @@ function categorizePost(post: typeof learningPosts[0]) {
     return 'fundamentals';
   }
   
-  // Other learning posts (miscellaneous)
-  return 'other';
+  // Check if it's an external resource or own article
+  const isExternal = await isExternalResource(post);
+  return isExternal ? 'external' : 'own-articles';
 }
+
+// Categorize all posts
+const categorizedPosts = await Promise.all(
+  learningPosts.map(async (post) => ({
+    post,
+    category: await categorizePost(post)
+  }))
+);
 
 // Group posts by series
 const seriesGroups = {
-  fundamentals: learningPosts.filter(p => categorizePost(p) === 'fundamentals')
+  fundamentals: categorizedPosts
+    .filter(({ category }) => category === 'fundamentals')
+    .map(({ post }) => post)
     .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime()),
-  unsupervised: learningPosts.filter(p => categorizePost(p) === 'unsupervised')
+  unsupervised: categorizedPosts
+    .filter(({ category }) => category === 'unsupervised')
+    .map(({ post }) => post)
     .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime()),
-  supervised: learningPosts.filter(p => categorizePost(p) === 'supervised')
+  supervised: categorizedPosts
+    .filter(({ category }) => category === 'supervised')
+    .map(({ post }) => post)
     .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime()),
-  scoping: learningPosts.filter(p => categorizePost(p) === 'scoping')
+  scoping: categorizedPosts
+    .filter(({ category }) => category === 'scoping')
+    .map(({ post }) => post)
     .sort((a, b) => {
       // Sort scoping series by article number if available
       const aMatch = a.slug.match(/article-(\d+)/);
@@ -82,7 +119,13 @@ const seriesGroups = {
       if (b.slug.includes('scoping-what-organizations-get-wrong-serie')) return 1;
       return a.data.pubDate.getTime() - b.data.pubDate.getTime();
     }),
-  other: learningPosts.filter(p => categorizePost(p) === 'other')
+  ownArticles: categorizedPosts
+    .filter(({ category }) => category === 'own-articles')
+    .map(({ post }) => post)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()),
+  external: categorizedPosts
+    .filter(({ category }) => category === 'external')
+    .map(({ post }) => post)
     .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
 };
 
@@ -217,11 +260,40 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
         </section>
     )}
 
-    {seriesGroups.other.length > 0 && (
+    {seriesGroups.ownArticles.length > 0 && (
+        <section class="posts-section">
+            <h2 class="section-title">ARTICLES & NOTES</h2>
+            <div class="posts-grid">
+                {seriesGroups.ownArticles.map((post) => (
+                    <article class="post-card">
+                        <div class="post-header">
+                            <span class="post-date">
+                                {new Intl.DateTimeFormat('en-US', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit'
+                                }).format(post.data.pubDate)}
+                            </span>
+                            <span class="post-category">LEARNING</span>
+                        </div>
+                        <h3 class="post-title">
+                            <a href={`${baseUrl}blog/${post.slug}`} style="color: inherit; text-decoration: none;">
+                                {post.data.title}
+                            </a>
+                        </h3>
+                        <p class="post-excerpt">{post.data.description}</p>
+                        <a href={`${baseUrl}blog/${post.slug}`} class="post-link">READ MORE →</a>
+                    </article>
+                ))}
+            </div>
+        </section>
+    )}
+
+    {seriesGroups.external.length > 0 && (
         <section class="posts-section">
             <h2 class="section-title">OTHER LEARNING RESOURCES</h2>
             <div class="posts-grid">
-                {seriesGroups.other.map((post) => (
+                {seriesGroups.external.map((post) => (
                     <article class="post-card">
                         <div class="post-header">
                             <span class="post-date">
