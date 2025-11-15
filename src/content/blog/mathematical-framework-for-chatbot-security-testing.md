@@ -1,7 +1,7 @@
 ---
 title: "Mathematical Framework for Chatbot Security Testing"
 description: "Discussion on chatbot security testing as a systematic, measurable process rather than 'try a bunch of jailbreak prompts and see what sticks.' Designed for both white-box and black-box setups with clear notes on what is actually feasible in each case."
-pubDate: 2025-01-15
+pubDate: 2025-11-15
 category: "Learning"
 tags: ["security", "testing", "framework", "chatbot"]
 image: "images/MathematicalFrameworkforChatbotSecurityTesting.png"
