@@ -4,7 +4,7 @@ description: "Discussion on chatbot security testing as a systematic, measurable
 pubDate: 2025-11-15
 category: "Learning"
 tags: ["security", "testing", "framework", "chatbot"]
-image: "images/MathematicalFrameworkforChatbotSecurityTesting.png"
+image: "images/MathematicalFrameworkforChatbotSecurityTesting1.png"
 draft: false
 ---
 
