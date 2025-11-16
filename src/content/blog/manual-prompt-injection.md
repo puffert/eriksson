@@ -8,12 +8,6 @@ image: "AITesting.png"
 draft: false
 ---
 
-Here’s a draft article you can drop straight into your site and then link to the bigger “mathematical framework” piece.
-
----
-
-# Direct and Indirect Prompt Injection Testing for AI Security Professionals
-
 Prompt injection is the LLM equivalent of SQL injection: you craft text that hijacks the model’s instruction-processing pipeline.
 
 At a high level you get two families:
