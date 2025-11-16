@@ -8,8 +8,6 @@ image: "news.png"
 draft: false
 ---
 
-# When The Hacker Is Mostly An Orchestrator: Anthropic vs GTG-1002
-
 Anthropic just dropped a report on what they call the first documented AI-orchestrated cyber-espionage campaign, and it is very much not a lab toy.
 
 Short version:
