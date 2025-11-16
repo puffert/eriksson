@@ -25,11 +25,11 @@ This article walks through common testing styles – spellchecking, obfuscation,
 
 ---
 
-## 1. Direct prompt injection
+## Direct prompt injection
 
 Direct prompt injection means: the user prompt explicitly tries to override the system’s rules.
 
-### 1.1 Classic overwrite patterns
+### Classic overwrite patterns
 
 These are the “obvious” ones you see in every jailbreak thread:
 
@@ -56,7 +56,7 @@ If you see "UNSAFE", the instruction hierarchy is weak.
 
 ---
 
-1.2 “Authoritarian” / authority-based injections
+### “Authoritarian” / authority-based injections
 
 These lean on social engineering: pretend to be someone the model “should” obey.
 
@@ -84,7 +84,7 @@ You’re not asking for harmful content, just testing whether claiming authority
 
 ---
 
-1.3 Spellchecking and paraphrasing as direct injection
+### Spellchecking and paraphrasing as direct injection
 
 Here the attacker hides intent inside a seemingly benign task:
 
@@ -119,7 +119,7 @@ If you see OVERRIDE_OK, your “don’t follow inline instructions” boundary i
 
 ---
 
-2. Indirect prompt injection
+## Indirect prompt injection
 
 Indirect prompt injection appears when the model is asked to interact with external content:
 
@@ -134,7 +134,7 @@ Call a tool and then use its output
 
 The attack lives in that external content, not in the user’s prompt.
 
-2.1 Document-based injections
+### Document-based injections
 
 Example scenario: the model is asked to “summarize” or “spellcheck” a document, and the document contains hidden instructions.
 
@@ -158,7 +158,7 @@ Secure behavior → the summary reflects the content (e.g., “Someone is trying
 
 ---
 
-2.2 Tool output / web output injections
+### Tool output / web output injections
 
 Same idea, but inside tool responses:
 
@@ -190,7 +190,7 @@ This is a classic indirect injection path in RAG / browsing setups.
 
 ---
 
-2.3 Obfuscation as an indirect vector
+### Obfuscation as an indirect vector
 
 Attackers will often obfuscate their instructions so they “look” harmless:
 
@@ -226,7 +226,7 @@ Treats decoded text as new instructions and follows them.
 
 ---
 
-3. Confusion attacks
+## Confusion attacks
 
 “Confusion” attacks try to blur boundaries:
 
@@ -256,7 +256,7 @@ Healthy behavior → treat all of this as user content, not as real system confi
 
 ---
 
-4. Strengths of pattern-based injection testing
+## Strengths of pattern-based injection testing
 
 These methods (spellchecking, obfuscation, confusion, “authoritarian” prompts) have real value:
 
@@ -276,26 +276,26 @@ But they also have structural drawbacks compared to a more formal, mathematical 
 
 ---
 
-5. Drawbacks vs a mathematical testing framework
+## Drawbacks vs a mathematical testing framework
 
-Earlier, we outlined a more systematic framework:
+- Earlier, we outlined a more systematic framework:
 
-Adversarial search (coordinate / evolutionary)
+- Adversarial search (coordinate / evolutionary)
 
-Coverage-guided fuzzing
+- Coverage-guided fuzzing
 
-Information-theoretic leakage estimates
+- Information-theoretic leakage estimates
 
-Metamorphic and differential testing
+- Metamorphic and differential testing
 
-Game-theoretic attacker/defender modeling
+- Game-theoretic attacker/defender modeling
 
-Automated scoring and regression
+- Automated scoring and regression
 
 
 Compared to that, pattern-based prompt injection testing has some clear limits.
 
-5.1 Low coverage
+### Low coverage
 
 Pattern tests probe a tiny, handpicked corner of the space:
 
@@ -320,7 +320,7 @@ The mathematical framework, especially with coverage-guided fuzzing and coordina
 
 ---
 
-5.2 Hard to measure progress
+### Hard to measure progress
 
 Pattern-based tests are usually binary:
 
@@ -358,7 +358,7 @@ Pattern-only testing doesn’t give you that.
 
 ---
 
-5.3 Easy to overfit defenses
+### Easy to overfit defenses
 
 If you only test fixed patterns such as:
 
@@ -394,7 +394,7 @@ Measures robustness, not just string matching
 
 ---
 
-5.4 Not leakage-aware
+### Not leakage-aware
 
 Direct/indirect injection tests usually focus on:
 
@@ -418,8 +418,7 @@ That’s a different failure mode than “one jailbreak prompt worked once”.
 
 
 ---
-
-6. How to combine both approaches
+## How to combine both approaches
 
 The right way to think about this is:
 
@@ -460,7 +459,7 @@ You keep the intuition and storytelling of classic prompt injection tests, but y
 
 ---
 
-Takeaways
+## Takeaways
 
 Direct and indirect prompt injection testing – spellchecking wrappers, obfuscation, confusion, authority prompts – are essential first-line tests and great educational tools.
 
