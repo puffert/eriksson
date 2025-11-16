@@ -8,8 +8,6 @@ image: "AITesting.png"
 draft: false
 ---
 
-# Death by a Thousand Prompts: Multi-Turn Jailbreaks in Open-Weight Models
-
 Death by a Thousand Prompts is a new open-weight LLM security study from Cisco AI Defense that looks at eight popular models and asks a simple question:
 
 **What actually happens to safety guardrails once you stop testing single prompts and start behaving like a real attacker in a real conversation?**
