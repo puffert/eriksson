@@ -8,7 +8,7 @@ image: "news.png"
 draft: false
 ---
 
-**Vortex Node AI Security Labs** are currently in beta and on track for a full launch before the holidays this year.
+**Vortex Node AI Security Labs** are currently in beta.
 
 ## What Are the Labs?
 
