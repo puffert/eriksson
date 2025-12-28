@@ -1,5 +1,5 @@
 ---
-title: "AI Security Labs Launching Before Holidays - Beta Now Open"
+title: "AI Security Labs - Beta Now Open"
 description: "Vortex Node AI Security Labs are currently in beta. Interactive, gamified AI security challenges run through Discord, building a community of security professionals."
 pubDate: 2025-12-15
 category: "News"
